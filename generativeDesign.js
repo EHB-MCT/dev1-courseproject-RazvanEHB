@@ -5,11 +5,13 @@ import * as Noise from "../dev1-courseproject-RazvanEHB/scripts/noise.js";
 let width = window.innerWidth;
 let height = window.innerHeight;
 
+let position = 50;
+
 background();
 //gradientLines();
 trajectory();
-ball();
 perlinLines();
+ball();
 
 function background() {
     const gradient = context.createLinearGradient(20, 0, 700, 600);
@@ -48,18 +50,23 @@ function trajectory() {
     //}
 //}
 
+
+
 function perlinLines() {
-    for (let i = 0; i < 3; i++) {
+    for (let i = -15; i < 29; i++) {
         let direct = 1
         const gradientLine = context.createLinearGradient(300, 0, 1000, 600);
         gradientLine.addColorStop(0, "black");
         gradientLine.addColorStop(0.5, "#2a2a2a");
         gradientLine.addColorStop(1, "black");
         context.strokeStyle = gradientLine;
-        context.lineWidth = 5;
+        context.lineWidth = 6;
 
         for (let j = 0; j <= height; j++) {
-            let x = j * direct + (100 + width * i) / 2 + Noise.perlinNoise(j / 100) * 175;
+            let x =
+            j * direct +
+            position * i +
+            Noise.perlinNoise(j / 100) * 200;
             let y = j;
             context.strokeRect(x, y, 1, 1)
         }
