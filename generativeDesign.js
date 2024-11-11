@@ -2,10 +2,14 @@ import context from "../dev1-courseproject-RazvanEHB/scripts/context.js";
 import * as utils from "../dev1-courseproject-RazvanEHB/scripts/utils.js";
 import * as Noise from "../dev1-courseproject-RazvanEHB/scripts/noise.js";
 
+//Credits go to the DEV1 course for the source of the perlin noise used in this project
+//
+
 let width = window.innerWidth;
 let height = window.innerHeight;
 
 let position = 50;
+let positionTrajectory = 7;
 
 background();
 //gradientLines();
@@ -24,22 +28,25 @@ function background() {
 }
 
 function trajectory() {
-    const gradientLine = context.createLinearGradient(300, 0, 1000, 600);
-    gradientLine.addColorStop(0, "#e23e64");
-    gradientLine.addColorStop(0.5, "#e69d25");
-    gradientLine.addColorStop(1, "#e23e64");
+    for (let i = 0; i < 8; i++) {
+        let direct = 1
+        const gradientLine = context.createLinearGradient(300, 0, 1000, 600);
+        gradientLine.addColorStop(0, "#e23e64");
+        gradientLine.addColorStop(0.5, "#e69d25");
+        gradientLine.addColorStop(1, "#e23e64");
+        context.strokeStyle = gradientLine;
+        context.lineWidth = 6;
 
-    context.fillStyle = gradientLine;
-    context.lineWidth = 4;
-    //utils.drawLine(0, -200, 760, height);
-    //utils.drawLine(760, height, 840, height);
-    //utils.drawLine(840, height, 0, -200);
-    context.beginPath();
-    context.moveTo(0, -200);
-    context.lineTo(763, height);
-    context.lineTo(837, height);
-    context.lineTo(0, -200);
-    context.fill();
+        for (let j = 0; j <= height; j++) {
+            let x =
+            j * direct +
+            positionTrajectory * i +
+            Noise.perlinNoise(j / 100) * 200;
+            let y = j;
+            context.strokeRect(x, y, 1, 1)
+        }
+        direct++;
+    }
 }
 
 //function lines() {
@@ -75,14 +82,27 @@ function perlinLines() {
 }
 
 function ball() {
-    context.fillStyle = "#303030"
-    utils.fillCircle(510, height / 2, Math.PI * 11);
-    context.fillStyle = "#474747"
-    utils.fillCircle(510, height / 2, Math.PI * 10);
-    context.fillStyle = "#757575"
-    utils.fillCircle(505, 350, Math.PI * 8);
-    context.fillStyle = "#bababa"
-    utils.fillCircle(495, 350, Math.PI * 3);
-    utils.fillCircle(498, 345, Math.PI * 3);
-    utils.fillCircle(513, 335, Math.PI * 2);
+    const radialGradient = context.createRadialGradient(10, 0, 20, 0, 10, 70);
+
+    // Add three color stops
+    gradient.addColorStop(0, "pink");
+    gradient.addColorStop(0.5, "white");
+    gradient.addColorStop(1, "green");
+
+    // Set the fill style and draw a rectangle
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, 160, 160);
+
+    //context.fillStyle = "gradientLine";
+    //context.fillRect(510, height / 2, 100, 100);
+    //context.fillStyle = "#303030"
+    //utils.fillCircle(510, height / 2, Math.PI * 11);
+    //context.fillStyle = "#474747"
+    //utils.fillCircle(510, height / 2, Math.PI * 10);
+    //context.fillStyle = gradientLine
+    //utils.fillCircle(505, 350, Math.PI * 8);
+    //context.fillStyle = "#bababa"
+    //utils.fillCircle(495, 350, Math.PI * 3);
+    //utils.fillCircle(498, 345, Math.PI * 3);
+    //utils.fillCircle(513, 335, Math.PI * 2);
 }
