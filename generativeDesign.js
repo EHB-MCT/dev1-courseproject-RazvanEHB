@@ -3,6 +3,7 @@ import * as utils from "../dev1-courseproject-RazvanEHB/scripts/utils.js";
 import * as Noise from "../dev1-courseproject-RazvanEHB/scripts/noise.js";
 
 //Credits go to the DEV1 course for the source of the perlin noise used in this project
+//Information over the radial gradient: https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/radial-gradient
 //
 
 let width = window.innerWidth;
@@ -12,10 +13,9 @@ let position = 50;
 let positionTrajectory = 7;
 
 background();
-//gradientLines();
 trajectory();
 perlinLines();
-ball();
+steelBall();
 
 function background() {
     const gradient = context.createLinearGradient(20, 0, 700, 600);
@@ -49,15 +49,6 @@ function trajectory() {
     }
 }
 
-//function lines() {
-    //for (let i = 0; i <= 200000; i = i + 40) {
-        //context.strokeStyle = "black";
-        //context.lineWidth = 4;
-        //utils.drawLine(0, -200, i, height);
-    //}
-//}
-
-
 
 function perlinLines() {
     for (let i = -15; i < 29; i++) {
@@ -81,28 +72,12 @@ function perlinLines() {
     }
 }
 
-function ball() {
-    const radialGradient = context.createRadialGradient(10, 0, 20, 0, 10, 70);
-
-    // Add three color stops
-    gradient.addColorStop(0, "pink");
-    gradient.addColorStop(0.5, "white");
-    gradient.addColorStop(1, "green");
-
-    // Set the fill style and draw a rectangle
-    context.fillStyle = gradient;
-    context.fillRect(0, 0, 160, 160);
-
-    //context.fillStyle = "gradientLine";
-    //context.fillRect(510, height / 2, 100, 100);
-    //context.fillStyle = "#303030"
-    //utils.fillCircle(510, height / 2, Math.PI * 11);
-    //context.fillStyle = "#474747"
-    //utils.fillCircle(510, height / 2, Math.PI * 10);
-    //context.fillStyle = gradientLine
-    //utils.fillCircle(505, 350, Math.PI * 8);
-    //context.fillStyle = "#bababa"
-    //utils.fillCircle(495, 350, Math.PI * 3);
-    //utils.fillCircle(498, 345, Math.PI * 3);
-    //utils.fillCircle(513, 335, Math.PI * 2);
+function steelBall() {
+    const radialGradient = context.createRadialGradient(500, 340, 10, 500, 340, 55);
+    radialGradient.addColorStop(0, "#bababa");
+    radialGradient.addColorStop(0.5, "#737373");
+    radialGradient.addColorStop(1, "#474747");
+    radialGradient.addColorStop(0.85, "#363636");
+    context.fillStyle = radialGradient;
+    utils.fillCircle(510, height / 2, Math.PI * 15);
 }
