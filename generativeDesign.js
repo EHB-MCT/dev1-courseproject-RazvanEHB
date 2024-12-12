@@ -1,21 +1,34 @@
-import context from "../dev1-courseproject-RazvanEHB/scripts/context.js";
-import * as utils from "../dev1-courseproject-RazvanEHB/scripts/utils.js";
-import * as Noise from "../dev1-courseproject-RazvanEHB/scripts/noise.js";
+import context from "./scripts/context.js";
+import * as utils from "./scripts/utils.js";
+import * as Noise from "./scripts/noise.js";
 
-//Credits go to the DEV1 course for the source of the perlin noise used in this project
+//Credits go to "Joeddion" the DEV1 course for the source of the perlin noise used in this project
 //Information over the radial gradient: https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/radial-gradient
 //
 
 let width = window.innerWidth;
 let height = window.innerHeight;
 
+context.canvas.addEventListener("mousemove", move)
+
 let position = 50;
 let positionTrajectory = 7;
 
-background();
-trajectory();
-perlinLines();
-steelBall();
+let mouseX = 0;
+let mouseY = 0;
+
+let frameCount = 0;
+
+update();
+
+function update() {
+    frameCount++;
+    background();
+    trajectory();
+    perlinLines();
+    steelBall(350, 200);
+    requestAnimationFrame(update);
+}
 
 function background() {
     const gradient = context.createLinearGradient(20, 0, 700, 600);
@@ -41,7 +54,8 @@ function trajectory() {
             let x =
             j * direct +
             positionTrajectory * i +
-            Noise.perlinNoise(j / 100) * 200;
+            Noise.perlinNoise((j + frameCount) / 100) * 200;
+            x += Noise.perlinNoise((100 + j + frameCount * mouseX + mouseY) / 200) * 5;
             let y = j;
             context.strokeRect(x, y, 1, 1)
         }
@@ -64,7 +78,8 @@ function perlinLines() {
             let x =
             j * direct +
             position * i +
-            Noise.perlinNoise(j / 100) * 200;
+            Noise.perlinNoise((j + frameCount) / 100) * 200;
+            x += Noise.perlinNoise((100 + j + frameCount * mouseX) / 200) * 5;
             let y = j;
             context.strokeRect(x, y, 1, 1)
         }
@@ -72,12 +87,23 @@ function perlinLines() {
     }
 }
 
-function steelBall() {
-    const radialGradient = context.createRadialGradient(500, 340, 10, 500, 340, 55);
+function steelBall(xb, yb) {
+    const radialGradient = context.createRadialGradient(xb - 10, yb - 10, 10, xb - 10, yb - 10, 55);
     radialGradient.addColorStop(0, "#bababa");
     radialGradient.addColorStop(0.5, "#737373");
     radialGradient.addColorStop(1, "#474747");
     radialGradient.addColorStop(0.85, "#363636");
     context.fillStyle = radialGradient;
-    utils.fillCircle(510, height / 2, Math.PI * 15);
+    utils.fillCircle(xb, yb, Math.PI * 15);
+}
+
+/**
+ *
+ * @param {MouseEvent} e
+ */
+
+function move(e) {
+    mouseX = e.pageX;
+    let cursorY = e.pageY;
+    console.log(move);
 }
