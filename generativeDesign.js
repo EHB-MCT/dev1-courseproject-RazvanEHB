@@ -18,19 +18,34 @@ let mouseX = 0;
 let mouseY = 0;
 
 let frameCount = 0;
+let frameCountBall = 649;
+let ballMovingRight = true;
 
 let mouseMoving = false;
 let mouseTimeout;
 
+let xb = 0;
+let yb = 0;
+
 update();
+steelBallUpdate();
 
 function update() {
     frameCount++;
     background();
     trajectory();
     perlinLines();
-    steelBall(350, 200);
     requestAnimationFrame(update);
+}
+
+function steelBallUpdate() { 
+    if (frameCountBall < 650) {
+        frameCountBall++;
+    } else if (frameCountBall > 625) {
+        frameCountBall--;
+    }
+    steelBall(frameCountBall, 500);
+    requestAnimationFrame(steelBallUpdate);
 }
 
 function onMouseMove() {
@@ -51,6 +66,18 @@ function background() {
 
     context.fillStyle = gradient;
     context.fillRect(0, 0, width, height);
+}
+
+function steelBall(xb, yb) {
+
+    const radialGradient = context.createRadialGradient(xb - 10, yb - 10, 10, xb - 10, yb - 10, 55);
+    radialGradient.addColorStop(0, "#bababa");
+    radialGradient.addColorStop(0.5, "#737373");
+    radialGradient.addColorStop(1, "#474747");
+    radialGradient.addColorStop(0.85, "#363636");
+    context.fillStyle = radialGradient;
+    utils.fillCircle(xb, yb, Math.PI * 15);
+
 }
 
 function trajectory() {
@@ -74,7 +101,8 @@ function trajectory() {
             }
 
             let y = j;
-            context.strokeRect(x, y, 1, 1)
+
+            context.strokeRect(x, y, 1, 1);
         }
         direct++;
     }
@@ -101,20 +129,11 @@ function perlinLines() {
             }
 
             let y = j;
+
             context.strokeRect(x, y, 1, 1);
         }
         direct++;
     }
-}
-
-function steelBall(xb, yb) {
-    const radialGradient = context.createRadialGradient(xb - 10, yb - 10, 10, xb - 10, yb - 10, 55);
-    radialGradient.addColorStop(0, "#bababa");
-    radialGradient.addColorStop(0.5, "#737373");
-    radialGradient.addColorStop(1, "#474747");
-    radialGradient.addColorStop(0.85, "#363636");
-    context.fillStyle = radialGradient;
-    utils.fillCircle(xb, yb, Math.PI * 15);
 }
 
 /**
